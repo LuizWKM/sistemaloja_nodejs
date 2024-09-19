@@ -28,7 +28,7 @@ footer{
 }
 
 body{
-    background-image: url("../imgs/bg.jpg");
+    background-image: linear-gradient(to top,#99e7d9,#748884);
     background-repeat: no-repeat;
     background-size: cover;
 

@@ -1,20 +1,28 @@
 <%- include ('partials/header.ejs') %>
 <%- include ('partials/navbar.ejs') %>
-<h1 class="d-flex justify-content-center">Pedidos</h1>
-<table class="table table-bordered table-striped">
-    <thead class="table-dark">
-        <tr>
-            <th scope="col">Número do pedido</th>
-            <th scope="col">Valor</th>
-        </tr>
-    </thead>
-    <tbody>        
-        <tr>
-            <% pedidos.forEach((ped) => { %>
-                <td><%= ped.nump %></td>
-                <td>R$<%= ped.valor %></td>
-        </tr>
-       <% })%>
-    </tbody>
-</table>
+<div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="d-flex justify-content-center">Clientes</h1>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Número do pedido</th>
+                    <th scope="col">Valor</th>
+                </tr>
+            </thead>
+            <tbody>        
+                <tr>
+                    <% pedidos.forEach((ped) => { %>
+                        <td><%= ped.nump %></td>
+                        <td>R$<%= ped.valor %></td>
+                </tr>
+            <% })%>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 <%- include ('partials/footer.ejs') %>

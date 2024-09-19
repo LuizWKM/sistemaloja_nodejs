@@ -1,13 +1,14 @@
 //Importando o express
-import express from 'express'
+import express from "express";
 //Escolhendo a variavel para ser o router
-const router = express.router()
+const router = express.Router();
 
 // ROTA PEDIDOS
-const pedidos = [ 
+router.get("/pedidos", function (req, res) {
+  const pedidos = [
     {
-    nump: 1,
-    valor: "388,80",
+      nump: 1,
+      valor: "388,80",
     },
     {
       nump: 2,
@@ -20,9 +21,10 @@ const pedidos = [
     {
       nump: 4,
       valor: "208,90",
-    },  
-  ]
-  res.render("pedidos", 
-  {
-  pedidos: pedidos
+    },
+  ];
+  res.render("pedidos", {
+    pedidos: pedidos,
   });
+});
+export default router;
