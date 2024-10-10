@@ -1,41 +1,81 @@
 import express from "express";
 const router = express.Router();
+// Importando o model de Cliente
+import ClienteMDC from "../models/Cliente.js";
 
 // ROTA CLIENTES
 router.get("/clientes", function (req, res) {
-  const cliente = [
-    {
-      num: 1,
-      nome: "Carlos da Silva",
-      cpf: "458.115.770-60",
-      endereco:
-        "Quadra QE 11 Área Especial C, nº435, Guará I. CEP: 71090-285. Brasília - Distrito Federal",
-    },
-    {
-      num: 2,
-      nome: "Joaquim Magno",
-      cpf: "648.453.620-15",
-      endereco:
-        "Rua Cristiano Olsen, nº254, Jardim Sumaré. CEP: 16015-244. Araçatuba - São Paulo",
-    },
-    {
-      num: 3,
-      nome: "Charles Emmanuel",
-      cpf: "571.147.050-77",
-      endereco:
-        "Rua da Imprensa, nº97, Monte Castelo. CEP: 79002-290. Campo Grande - Mato Grosso do Sul",
-    },
-    {
-      num: 4,
-      nome: "Guilherme Cabral",
-      cpf: "155.050.150-00",
-      endereco:
-        "Rua Domingos Olímpio, nº42, Casa, Centro. CEP: 62011-140. Sobral - Ceará",
-    },
-  ];
-  res.render("clientes", {
-    cliente: cliente,
+  ClienteMDC.findAll().then((clientes) => {
+    res.render("clientes", {
+      clientes: clientes,
+    });
   });
 });
 
+// ROTA DE CADASTRO DE CLIENTES
+router.post("/clientes/new", (req, res) => {
+  // RECEBENDO OS DADOS DO FORMULÁRIO E GRAVANDO NAS VARIÁVEIS
+  const nome = req.body.nome;
+  const cpf = req.body.cpf;
+  const endereco = req.body.endereco;
+  ClienteMDC.create({
+    nome: nome,
+    cpf: cpf,
+    endereco: endereco,
+  })
+    .then(() => {
+      res.redirect("/clientes");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+// ROTA DE EXCLUSÃO DE CLIENTES
+// ESSA ROTA POSSUI UM PARÂMETRO ID
+router.get("/clientes/delete/:id", (req, res) => {
+  const id = req.params.id;
+  ClienteMDC.destrory({ where: { id: id } })
+    .then(() => {
+      res.redirect("/clientes");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+// ROTA DE EDIÇÃO DE CLIENTE
+router.get("/clientes/edit/:id", (req, res) => {
+  const id = req.params.id;
+  ClienteMDC.findByPk(id)
+    .then((cliente) => {
+      res.render("clienteEdit", {
+        cliente: cliente,
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+// ROTA DE ALTERAÇÃO DE CLIENTE
+router.post("/clientes/update", (req, res) => {
+  const id = req.body.id;
+  const nome = req.body.nome;
+  const cpf = req.body.cpf;
+  const endereco = req.body.endereco;
+  ClienteMDC.update(
+    {
+      nome: nome,
+      cpf: cpf,
+      endereco: endereco,
+    },
+    { where: { id: id } }
+  )
+    .then(() => {
+      res.redirect("/clientes");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
 export default router;

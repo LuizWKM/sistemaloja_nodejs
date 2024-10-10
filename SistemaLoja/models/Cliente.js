@@ -4,12 +4,7 @@ import Sequelize from "sequelize";
 import connection from "../config/sequelize-config.js"
 
 // .define cria a tabela no banco
-const Cliente = connection.define('clientes',{
-    num: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
-    
+const ClienteMDC = connection.define('clientes',{
     nome: {
         type: Sequelize.STRING,
         allowNull: false
@@ -25,5 +20,5 @@ const Cliente = connection.define('clientes',{
         allowNull: false
     }
 })
-Cliente.sync({force: false})
-export default Cliente
+ClienteMDC.sync({force: false})
+export default ClienteMDC
