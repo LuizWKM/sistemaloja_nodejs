@@ -48,7 +48,7 @@
                         <td class="align-middle">R$<%= pro.pre %></td>
                         <td class="align-middle"><%= pro.cat %></td>
                         <td class="align-middle"><a href="/produtos/edit/<%= pro.id %>">Editar</a></td>
-                        <td class="align-middle"><a onclick="return confirm('Deseja realmente deletar o produto <%= pro.nomep %>')" href="/produtos/delete/<%= pro.id %>">Deletar</a></td>
+                        <td class="align-middle"><a onclick="return confirm('Deseja realmente deletar o produto <%= pro.nomep %>?')" href="/produtos/delete/<%= pro.id %>">Deletar</a></td>
                 </tr>
             <% })%>
           </tbody>
