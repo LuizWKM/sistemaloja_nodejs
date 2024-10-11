@@ -9,7 +9,9 @@ router.get("/clientes", function (req, res) {
     res.render("clientes", {
       clientes: clientes,
     });
-  });
+  }).catch((error) => {
+    console.log(error);
+  })
 });
 
 // ROTA DE CADASTRO DE CLIENTES
@@ -34,7 +36,7 @@ router.post("/clientes/new", (req, res) => {
 // ESSA ROTA POSSUI UM PARÂMETRO ID
 router.get("/clientes/delete/:id", (req, res) => {
   const id = req.params.id;
-  ClienteMDC.destrory({ where: { id: id } })
+  ClienteMDC.destroy({ where: { id: id } })
     .then(() => {
       res.redirect("/clientes");
     })

@@ -2,29 +2,79 @@
 import express from "express";
 //Escolhendo a variavel para ser o router
 const router = express.Router();
+//Importando models de pedidos
+import PedidoMDC from "../models/Pedido.js";
 
 // ROTA PEDIDOS
 router.get("/pedidos", function (req, res) {
-  const pedidos = [
-    {
-      nump: 1,
-      valor: "388,80",
-    },
-    {
-      nump: 2,
-      valor: "3723,00",
-    },
-    {
-      nump: 3,
-      valor: "99,00",
-    },
-    {
-      nump: 4,
-      valor: "208,90",
-    },
-  ];
-  res.render("pedidos", {
-    pedidos: pedidos,
+  PedidoMDC.findAll()
+    .then((pedido) => {
+      res.render("pedidos", {
+        pedido: pedido,
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  router.post("/pedidos/new", (req, res) => {
+    const nump = req.body.nump;
+    const valor = req.body.valor;
+    PedidoMDC.create({
+      nump: nump,
+      valor: valor,
+    })
+      .then(() => {
+        res.redirect("/pedidos");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   });
+});
+
+router.get("/pedidos/delete/:id", (req, res) => {
+  const id = req.params.id;
+  PedidoMDC.destroy({
+    where: { id: id },
+  })
+    .then(() => {
+      res.redirect("/pedidos");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+router.get("/pedidos/edit/:id", (req, res) => {
+  const id = req.params.id;
+  PedidoMDC.findByPk(id)
+    .then((pedido) => {
+      res.render("pedidoEdit", {
+        pedido: pedido,
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+router.post("/pedidos/update", (req, res) => {
+  const id = req.body.id;
+  const nump = req.body.nump;
+  const valor = req.body.valor;
+  PedidoMDC.update(
+    {
+      nump: nump,
+      valor: valor,
+    },
+    { where: { id: id } }
+  )
+    .then(() => {
+      res.redirect("/pedidos");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 export default router;
