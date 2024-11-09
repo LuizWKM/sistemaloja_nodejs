@@ -4,9 +4,10 @@ import express from "express";
 const router = express.Router();
 //Importando models de pedidos
 import PedidoMDC from "../models/Pedido.js";
+import Auth from "../middleware/Auth.js"
 
 // ROTA PEDIDOS
-router.get("/pedidos", function (req, res) {
+router.get("/pedidos", Auth,(req, res) => {
   PedidoMDC.findAll()
     .then((pedido) => {
       res.render("pedidos", {
@@ -17,7 +18,7 @@ router.get("/pedidos", function (req, res) {
       console.log(error);
     });
 
-  router.post("/pedidos/new", (req, res) => {
+  router.post("/pedidos/new", Auth,(req, res) => {
     const nump = req.body.nump;
     const valor = req.body.valor;
     PedidoMDC.create({
@@ -33,7 +34,7 @@ router.get("/pedidos", function (req, res) {
   });
 });
 
-router.get("/pedidos/delete/:id", (req, res) => {
+router.get("/pedidos/delete/:id", Auth,(req, res) => {
   const id = req.params.id;
   PedidoMDC.destroy({
     where: { id: id },
@@ -46,7 +47,7 @@ router.get("/pedidos/delete/:id", (req, res) => {
     });
 });
 
-router.get("/pedidos/edit/:id", (req, res) => {
+router.get("/pedidos/edit/:id", Auth,(req, res) => {
   const id = req.params.id;
   PedidoMDC.findByPk(id)
     .then((pedido) => {
@@ -59,7 +60,7 @@ router.get("/pedidos/edit/:id", (req, res) => {
     });
 });
 
-router.post("/pedidos/update", (req, res) => {
+router.post("/pedidos/update", Auth,(req, res) => {
   const id = req.body.id;
   const nump = req.body.nump;
   const valor = req.body.valor;

@@ -3,12 +3,11 @@ import express from "express";
 // Escolhendo a variavel para ser o router
 const router = express.Router();
 // Importando models de pedidos
-import ProdutoMDC from "../models/Produto.js"
-
-
+import ProdutoMDC from "../models/Produto.js";
+import Auth from "../middleware/Auth.js";
 
 // ROTA PRODUTOS
-router.get("/produtos", function (req, res) {
+router.get("/produtos", Auth,(req, res) => {
   ProdutoMDC.findAll().then((produto) => {
     res.render("produtos", {
        produto: produto,
@@ -19,7 +18,7 @@ router.get("/produtos", function (req, res) {
 });
 
 // ROTA DE CADASTRO DE PRODUTOS
-router.post("/produtos/new", (req,res) => {
+router.post("/produtos/new", Auth,(req,res) => {
   const img = req.body.img;
   const nomep = req.body.nomep;
   const pre = req.body.pre;
@@ -37,7 +36,7 @@ router.post("/produtos/new", (req,res) => {
 });
 
 // ROTA DE EXCLUSÃO DE PRODUTOS
-router.get("/produtos/delete/:id", (req,res) => {
+router.get("/produtos/delete/:id", Auth,(req,res) => {
   const id = req.params.id;
   ProdutoMDC.destroy({
     where: {id: id}
@@ -48,7 +47,7 @@ router.get("/produtos/delete/:id", (req,res) => {
   });
 });
 
-router.get("/produtos/edit/:id", (req,res) => {
+router.get("/produtos/edit/:id", Auth,(req,res) => {
   const id = req.params.id;
   ProdutoMDC.findByPk(id).then((produto) => {
     res.render("produtoEdit", {
@@ -59,7 +58,7 @@ router.get("/produtos/edit/:id", (req,res) => {
   });
 });
 
-router.post("/produtos/update", (req,res) => {
+router.post("/produtos/update", Auth,(req,res) => {
   const id = req.body.id;
   const img = req.body.img;
   const nomep = req.body.nomep;

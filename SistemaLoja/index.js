@@ -10,6 +10,24 @@ import connection from './config/sequelize-config.js'
 import ClientesController from "./controllers/ClientesController.js";
 import PedidosController from "./controllers/PedidosController.js";
 import ProdutosController from "./controllers/ProdutosController.js";
+import UsersController from "./controllers/UsersController.js";
+// Importando o gerador de sessões do express
+import session from "express-session"
+// Importando o middleware Auth
+import Auth from "./middleware/Auth.js"
+// Importando o express flash
+import flash from "express-flash"
+// Configurar as flash messages
+app.use(flash())
+
+// Configurando o express-session
+app.use(session({
+    secret: "mundosecret",
+    cookie: {maxAge: 3600000}, // Sessão expira em 1 hora
+    saveUnintialized: false,
+    resave: false  
+}));
+
 
 app.use(express.urlencoded({extended: false}))
 
@@ -36,9 +54,12 @@ app.use(express.static("public"));
 app.use("/", ClientesController);
 app.use("/", PedidosController);
 app.use("/", ProdutosController);
+app.use("/", UsersController)
 
-app.get("/", (req, res) => {
-  res.render("index");
+app.get("/", Auth,(req, res) => {
+  res.render("index", {
+    messages: req.flash()
+  });
 });
 
 const port = 8080;
